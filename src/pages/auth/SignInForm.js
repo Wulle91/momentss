@@ -28,13 +28,6 @@ const SignInForm = () => {
 
     const history = useHistory();
 
-    const handleChange = (event) => {
-        setSignInData({
-          ...signInData,
-          [event.target.name]: event.target.value,
-        });
-      };
-
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
@@ -46,6 +39,13 @@ const SignInForm = () => {
             setErrors(err.response?.data);
         }
     };
+
+    const handleChange = (event) => {
+        setSignInData({
+          ...signInData,
+          [event.target.name]: event.target.value,
+        });
+      };
 
   return (
     <Row className={styles.Row}>
