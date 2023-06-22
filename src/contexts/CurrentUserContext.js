@@ -1,7 +1,8 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
-import { useHistory } from "react-router";
 import { axiosRes, axiosReq } from '../api/axiosDefaults';
+import { useHistory } from "react-router";
+
 
 export const CurrentUserContext = createContext();
 export const SetCurrentUserContext = createContext();
@@ -16,16 +17,16 @@ export const CurrentUserProvider = ({children}) => {
     const handleMount = async () => {
       try {
         const { data } = await axiosRes.get("dj-rest-auth/user/");
-        
+        setCurrentUser(data);
       } catch (err) {
-        console.log(err);
+        console.log(err.response.data)
       }
     };
 
     useEffect(() => {
         handleMount();
     }, []);
-
+    
     useMemo(() => {
       axiosReq.interceptors.request.use(
         async (config) => {
@@ -70,10 +71,10 @@ export const CurrentUserProvider = ({children}) => {
     }, [history])
 
     return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <SetCurrentUserContext.Provider value={setCurrentUser}>
-        {children}
-      </SetCurrentUserContext.Provider>
-    </CurrentUserContext.Provider>
+      <CurrentUserContext.Provider value={currentUser}>
+        <SetCurrentUserContext.Provider value={setCurrentUser}>
+          {children}
+        </SetCurrentUserContext.Provider>
+      </CurrentUserContext.Provider>
     );
 };
